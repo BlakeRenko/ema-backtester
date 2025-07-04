@@ -40,7 +40,7 @@ if run:
 
     for i in range(1, len(data)):
         if data["Signal"].iloc[i] and not in_trade:
-            entry = data["Close"].iloc[i]
+            entry = data["Close"].iloc[i].item()
             sl = entry * (1 - sl_pct) if use_sl else None
             stop = entry - sl if use_sl else 1.0
             size = (portfolio_size * risk_pct) / stop
@@ -50,7 +50,7 @@ if run:
             in_trade = True
 
         elif in_trade:
-            price = data["Close"].iloc[i]
+            price = data["Close"].iloc[i].item()
             max_price = max(max_price, price)
             trail = max_price * (1 - trailing_pct) if use_trailing_pct else max(trail, data[f"EMA{trailing_ema}"].iloc[i])
             rr = (max_price - entry) / (entry - sl) if use_sl else 0
